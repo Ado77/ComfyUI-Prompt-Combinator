@@ -414,3 +414,51 @@ class PromptCombinatorRandomPrompt:
         filename = '-'.join(combination_id)
 
         return (prompt, combination_id, filename)
+
+class PromptCombinatorRandomPrompts:
+    """
+    ComfyUI-Prompt-Combinator
+    https://github.com/lquesada/ComfyUI-Prompt-Combinator
+
+    Node that picks a random prompt from a prompt combinator output.
+    """
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "prompts": ("STRING", {"default": '', "multiline": True, "forceInput": True}),
+                "combination_ids": ("PROMPTCOMBINATORIDS",),
+                "count": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+            },
+        }
+    INPUT_IS_LIST = True
+
+    RETURN_TYPES = ("STRING", "PROMPTCOMBINATORIDS", "STRING")
+    RETURN_NAMES = ("prompts", "combination_ids", "filenames")
+    OUTPUT_IS_LIST = (True, True, True)
+
+    FUNCTION = "pick_random_list"
+
+    OUTPUT_NODE = True
+
+    CATEGORY = "prompt_combinator"
+
+    def pick_random_list(self, prompts, combination_ids, count):
+        assert len(combination_ids) == len(prompts), "Amount of combination ids must be the same as amount of prompts"
+    
+        new_prompts = []
+        new_combination_ids = []
+        new_filenames = []
+    
+        for x in range(count[0]):
+            index = random.randint(0, len(prompts) - 1)
+
+            prompt = prompts[index]
+            combination_id = combination_ids[index]
+            filename = '-'.join(combination_id)
+
+            new_prompts.append(prompt)
+            new_combination_ids.append(combination_id)
+            new_filenames.append(filename)
+
+        return (new_prompts, new_combination_ids, new_filenames)
