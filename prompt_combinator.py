@@ -429,6 +429,7 @@ class PromptCombinatorRandomPrompts:
                 "prompts": ("STRING", {"default": '', "multiline": True, "forceInput": True}),
                 "combination_ids": ("PROMPTCOMBINATORIDS",),
                 "count": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
             },
         }
     INPUT_IS_LIST = True
@@ -443,7 +444,7 @@ class PromptCombinatorRandomPrompts:
 
     CATEGORY = "prompt_combinator"
 
-    def pick_random_list(self, prompts, combination_ids, count):
+    def pick_random_list(self, prompts, combination_ids, count, seed):
         assert len(combination_ids) == len(prompts), "Amount of combination ids must be the same as amount of prompts"
     
         new_prompts = []
